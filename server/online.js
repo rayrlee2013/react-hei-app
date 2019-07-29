@@ -1,7 +1,3 @@
-/**
- * Created by Rayr Lee on 2018/4/17.
- */
-
 import url from 'url';
 import path from 'path';
 import express from 'express';
