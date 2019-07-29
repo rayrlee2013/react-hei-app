@@ -7,25 +7,15 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
 const WebpackMd5Hash = require('webpack-md5-hash');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const HappyPack = require('happypack');
-const {assign} = Object;
 
-const os = require('os'), happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
-
-const HAPPY_CONF = {
-    threadPool: happyThreadPool,
-    debug: true
-};
-
-//构建目录
 const BUILD = path.resolve(__dirname, '../build')
 
 module.exports = {
     mode: 'production',
-    entry: require('./entry'),
+    entry: ['./src/app.js'],
     output: {
         path: BUILD,
         filename: 'js/[name].[chunkhash:6].js',
@@ -41,7 +31,11 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: ['happypack/loader?id=babel']
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    }
+                ]
             },
             {
                 test: /\.scss$/,
@@ -125,32 +119,9 @@ module.exports = {
         }
     },
     plugins: [
-        new CleanWebpackPlugin(['build'], {
-            root: path.resolve(__dirname, '../')
-        }),
+        new CleanWebpackPlugin(),
         new WebpackMd5Hash(),
         new webpack.HashedModuleIdsPlugin(),
-        new HappyPack(assign(HAPPY_CONF, {
-            id: 'babel',
-            loaders: [
-                {
-                    loader: 'babel-loader'
-                },
-                {
-                    loader: 'react-lazyload-loader',
-                    options: {
-                        loading: {
-                            name: 'ComponentLoading',
-                            path: 'components'
-                        }
-                    }
-                }
-            ]
-        })),
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
-        }),
         new MiniCssExtractPlugin({
             filename: 'css/styles.[contenthash:6].css',
             chunkFilename: 'css/styles.[contenthash:6].css'

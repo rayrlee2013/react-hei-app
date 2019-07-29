@@ -34,7 +34,6 @@
     "eslint-plugin-react": "^7.14.3",
     "express": "^4.17.1",
     "file-loader": "^4.1.0",
-    "happypack": "^5.0.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.19.1",
@@ -61,7 +60,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development babel-node server/server.js",
-    "build": "webpack --config conf/webpack.build.js",
+    "build": "node node_modules/webpack/bin/webpack.js -p --colors --display-error-details --config conf/webpack.build.js",
     "server": "cross-env babel-node server/online.js"
   }
 }

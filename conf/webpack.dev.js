@@ -5,15 +5,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HappyPack = require('happypack');
-const {assign} = Object;
-
-const os = require('os'), happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
-
-const HAPPY_CONF = {
-    threadPool: happyThreadPool,
-    debug: true
-};
 
 const webpackConfig = {
     mode: 'development',
@@ -44,11 +35,11 @@ const webpackConfig = {
             },
             {
                 test: /\.css$/,
-                use: ['happypack/loader?id=css']
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.scss$/,
-                use: ['happypack/loader?id=scss']
+                use: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
                 test: /\.html$/,
@@ -103,14 +94,6 @@ const webpackConfig = {
             filename: path.resolve(__dirname, '../dev/index.html'),
             inject: 'body'
         }),
-        new HappyPack(assign(HAPPY_CONF, {
-            id: 'css',
-            loaders: ['style-loader', 'css-loader']
-        })),
-        new HappyPack(assign(HAPPY_CONF, {
-            id: 'scss',
-            loaders: ['style-loader', 'css-loader', 'sass-loader']
-        })),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
     ]

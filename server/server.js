@@ -10,7 +10,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import webpackConfig from '../conf/webpack.dev';
 
-const devURL = 'http://127.0.0.1:9001';
+const devURL = 'http://127.0.0.1:8082';
 
 const urlParts = url.parse(devURL);
 
@@ -41,7 +41,6 @@ app.use(webpackDevMiddleware(compiler, {
 app.use(webpackHotMiddleware(compiler));
 
 app.get('*', (req, res, next) => {
-    console.log(compiler.outputPath);
     const filename = path.join(compiler.outputPath, 'index.html');
     compiler.outputFileSystem.readFile(filename, (error, result) => {
         if (error) {

@@ -6,14 +6,9 @@ import url from 'url';
 import express from 'express';
 import http from 'http';
 import fs from 'fs';
-import proxy from 'http-proxy-middleware';
 import compression from 'compression';
 
-const HELPER = require('./helper');
-const PORT = Number(HELPER.findArg('port')) || 13001;
-const HOST = HELPER.findArg('host') || '127.0.0.1';
-
-const devURL = `http://${HOST}:${PORT}`;
+const devURL = 'http://127.0.0.1:8081';
 
 const urlParts = url.parse(devURL);
 
